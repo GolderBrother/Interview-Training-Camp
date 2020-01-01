@@ -1,0 +1,148 @@
+深挖源码-Vue/React框架中必问的源码题 - 2019.12.28
+
+事件队列可以理解成堆
+
+BGM:
+霍比特人五军之战 Victoty
+
+var a = ?;
+if(a == 1 && a == 2 && a == 3) {
+	console.log(1);
+}
+
+toString()
+还要其他两种方案
+数据劫持
+Object.defineProperty
+
+== 比较规则
+
+(1)对象==字符串: 对象.toString()变为字符串
+(2)null==undefined 相等,但是和其它值比较就不在相等了null==undefined 相等  但是和其它值比较就不在相等了
+(3)NaN!==NaN 不相等, NaN 跟什么比较都不相等，包括自己
+(4)剩下的都是转换为数字
+
+对象转数值，默认会调用toString()方法
+[10] == 10 // true
+[10].toString();// "10"
+Number("10"); // 10
+
+第一种方法：
+重写对象a的toString()方法,每次获取的时候累加一个值，然后返回
+const a = {
+    i: 0,
+    toString() { // valueOf也可以
+	return ++this.i;
+    }
+}
+
+if(a == 1 && a == 2 && a == 3) {
+	console.log('条件成立')
+}
+
+对象都是先调用valueOf获取原始值，在调用toString()，所以上面用valueOf也可以。
+
+第二种方法：
+数据劫持
+ES5的Object.defineProperty() / ES6 的 Proxy
+
+只能用var，不能用let，因为var定义的变量是在window上的，而let不是
+var i = 0;
+Object.defineProperty(window, 'a', {
+	get(){
+		return ++i;
+	}
+})
+
+栈内存溢出
+
+第三种方法：
+const a = [1,2,3];
+a.toString = a.shift; // 删除第一项并返回
+if(a == 1 && a == 2 && a == 3) {
+	console.log('条件成立')
+}
+
+队列是先进先出,栈是先进后出
+
+很容易忘，就得背
+
+react编程思维更强，偏更原生。
+
+技术难度：
+react > vue
+
+要以react技术栈为主，vue为辅
+
+1.Vue2.0/3.0双向数据绑定的实现原理
+Vue2.0信手拈来
+Vue3.0自己研究过源码
+
+vue2.0检测变化的缺陷：
+默认需要递归，不能检测到数组元素和长度的变化，对象属性的增减
+因为需要分别给每一个属性进行包装成响应式的
+
+const obj = {};
+obj = new Proxy(obj, {
+	get(target, prop) {
+		return target[prop]
+	},
+	set(target, prop, value){
+		target[prop] = value;
+		observer();
+	}
+});
+
+function observer(){
+	// update xxx
+}
+
+MVC和MVVM的区别
+
+MVC: controller+model+view
+单向数据绑定：数据 -> 视图
+多加了个onChange事件，react框架就是
+MVVM: 
+双向数据绑定：数据 <-> 视图，vue、angular框架就是
+
+vue的双向数据绑定：
+oninput: e => this.value = e.target.value;
+view: {{value}}
+
+跨域问题的解决方案：
+浏览器的同源策略:
+协议 + 域名(IP) + 端口，只要有一个不一致，就形成了跨域
+
+ftp: 21
+sftp: 22
+
+服务端不返回数据：断网
+
+CORS: 跨域资源共享
+Access-Control-Allow-Origin
+如果为*，就不能携带cookie(资源凭证)，因为这样不安全
+
+webpack proxy:
+package.json 中 配置:
+proxy: "http://xxx.api.com"
+
+开发的时候用webpack的devServer,部署的时候用nginx反向代理
+
+首先用xxx,然后研究后发现用xxx更好，就引导团队用xxx方法
+
+vue是属性(props)配合发布订阅模式
+react是属性+回调函数
+
+本地存储
+vuex / redux
+localStorage/sessionStorage
+
+客户端存储：
+自己实现客户端持久化存储，设置个过期时间，每次获取前将当前时间和存储的时间进行比对，如果在过期时间内(比如1小时)，则直接用缓存的，否则重新请求服务端数据，并更新缓存中的时间，便于下次比对
+
+session和cookie的区别：
+服务器设置session  服务器返回给客户端的信息  在响应头中 带着set-cookie='connect.sid'    客户端会把信息种植到本地的cookie中httponly   客户端再次向服务器发送请求的时候  会默认在请求头中cookies 把connect.sid传递发给服务器
+
+IndexedDB 用于客户端存储大量结构化数据
+
+去好点的公司还是得学算法

@@ -1,0 +1,139 @@
+day_two - 掌握核心-深度剖析JS底层原理面试题 - 2019.12.27
+
+算法书籍：
+js数据结构和算法
+
+constrauctor typeof instanceOf Object.prototype.toString.call
+
+对象的属性类型都是字符串的
+
+堆：存储引用类型值的空间
+栈：存储基本类型值和指定代码的环境
+栈有顺序(先进后出)，堆没有顺序
+
+内存地址，一般是16进制的，例如 AAAFFF000
+
+对象的属性名不能重复，数字属性名 === 字符串属性名
+数组是特殊的对象，属性是索引，也就是number类型
+
+let a = Symbol('1'),b = Symbol('1');
+a === b // false
+
+Symbol创建的是唯一值
+
+对象的属性名一定是字符串吗？obj[Symbol('1')] = 'a';
+Symbol('1')就不是字符串类型
+
+英文博客比中文博客严谨，因为国人会加入自己的感觉
+
+运行的时候是转换成字符串的
+
+dir(123) // 123
+
+如果属性名是个对象，这个属性会将对象转换成字符串
+
+(1)数组和对象的区别
+(2)自己实现Symbol
+(3)Object.prototype.toString / valueOf 的区别
+
+遇到会的题，不要粗心
+
+alert弹出来的结果都是字符串,你以为你以为的就是你以为的
+
+vat test = (function(i){
+    return function(){
+	alert(i*=2)
+    }
+})(2);
+test(4);
+
+Execution Context Stack
+执行上下文
+
+郭靖是男的，15岁的时候没有女朋友，但是以后就有女朋友，这就是null
+郭靖没有男朋友，以后也没有。 这就是null
+
+函数也是对象，作为函数，在队中存储代码(字符串);原型prototype;length:形参个数，
+name:函数名称;作为对象存储键值对。
+
+test是个表达式的结果
+
+为了保证浏览器的性能，对于没有被引用的变量对象，会被垃圾回收机制回收
+
+执行上下文一直被引用，没有被销毁 -> 闭包
+
+内存泄漏：该销毁的没有被销毁
+
+MDN定义：闭包是函数和声明该函数的词法环境的组合
+
+// 全局作用域下的a和b没有用到
+// GO：Global Object
+var a = 0,
+ b = 0;
+function A(a) {
+   // 形参a 相当于是声明私有变量并立即赋值为1，下面的b也是一个道理
+   // 这边把上面的A重写了
+   A = function (b) {
+    alert(a + b++);
+   };
+   alert(a++);
+}
+A(1); // '1'
+A(2); // '4'
+
+对象(数组)的深克隆和浅克隆(头条)
+
+二维及二维以上的对象都是多维对象
+
+浅克隆：
+只克隆第一级
+
+{...obj}
+
+JSON.parse(JSON.stringify(obj))
+
+但是有以下问题：
+函数、undefined、Symbol会被忽略
+正则会被转换成对象、日期对象会被转换成字符串
+
+所以需要用递归来实现
+
+function deepClone(obj){
+    // 过滤特殊情况
+    if(obj === null) return null;
+    if(typeof obj === 'function') return new Function(obj);
+    if(ty)
+    // 不直接创建对象，目的：克隆的结果和之前保持相同的所属类，还是之前的实例
+    const newObj = new obj.constructor;
+    if(typeof obj !== 'object' || obj[key] == null) return obj;
+    for(let key in obj) {
+        if(obj.hasOwnProperty(key)) {
+	}
+    }
+}
+
+// 无参数new
+// 相等优先级的从左往右
+new Foo.getName(); 2
+new Foo().getName();3
+new new Foo.getName() => new ((new Foo()).getName)(); // 3
+new(无参) > new(有参) = 成员访问 -> ()
+
+script start 
+async1 start
+promise1
+script end
+async1 end
+async2
+promise2
+async1 end
+setTimeout
+
+任务分同步和异步，异步分微任务和宏任务
+
+概念
+项目保存、保护私有变量
+源码
+
+作业地址:
+https://ke.qq.com/webcourse/index.html#cid=474676&term_id=100568410&taid=4277044397948468&vid=6039948
