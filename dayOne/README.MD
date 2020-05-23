@@ -407,16 +407,19 @@ Alt text
 
 使用CALC
 
+```css
 .center {
     /* 兼容到IE9 */
     width: calc(100% - 400px);
     min-height: 400px;
     background: #ffa07a;
 }
+```
 ......
 flex 
 http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html?utm_source=tuicool
 
+```css
 html,
 body {
     overflow: hidden;
@@ -440,8 +443,11 @@ body {
     min-height: 400px;
     background: lightsalmon;
 }
+```
+
 定位
 
+```html
 <style>
     html,
     body {
@@ -477,6 +483,8 @@ body {
         background: lightsalmon;
     }
 </style>
+```
+
 4.移动端响应式布局开发的三大方案
 media
 
