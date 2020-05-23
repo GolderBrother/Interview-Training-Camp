@@ -304,6 +304,7 @@ Alt text
 
 圣杯布局：浮动和负MARGIN
 
+```html
 <style>
     html,
     body {
@@ -351,8 +352,11 @@ Alt text
     <div class="left"></div>
     <div class="right"></div>
 </div>
+```
+
 双飞翼布局：浮动和负MARGIN
 
+```html
 <style>
     html,
     body {
@@ -399,6 +403,8 @@ Alt text
     <div class="left"></div>
     <div class="right"></div>
 </body>
+```
+
 使用CALC
 
 .center {
